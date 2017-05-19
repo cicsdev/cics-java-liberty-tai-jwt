@@ -1,5 +1,5 @@
 # cics-java-liberty-tai-jwt
-CICS Java sample Trust Association Interceptor for use with Liberty to validate JSON web tokens (JWTs)
+CICS Java sample Trust Association Interceptor for use with Liberty to validate [JSON web tokens (JWTs)](https://tools.ietf.org/html/rfc7519)
 
 For detailed instructions see [Configuring TAI in Liberty](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_sec_tai.html) and [Developing a custom TAI for Liberty](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_dev_custom_tai.html).
 
@@ -11,46 +11,50 @@ The trust association interface is a service provider API that enables the integ
 
 > Note: The use of Trust Association Interceptors should be handled with care. Where possible use a standard supported mechanism within Liberty to achieve security architecture and integration goals. For instance, the validation of a JWT can be achieved by using built-in process in Liberty stand-alone v16.0.0.3 and later versions.
 
-The JWTTAI aims at:
+The JWTTAI java class aims at:
 
-* validating [JWTs](https://tools.ietf.org/html/rfc7519) - standard validations like expiry date and signature, but also custom ones like checking the `issuer` claim against expected values;
+* validating JWTs - standard validations like expiry date and signature, but also custom ones like checking the ***issuer*** claim against expected values;
 
-* assigning the `Principal` identity - by retrieving the `subject` claim and identifying it as the userid to run the request with;
+* assigning the ***Principal*** identity - by retrieving the ***subject*** claim and identifying it as the userid to run the request with;
 
 ## How does it work?
 
-At server initialization, JWTTAI reads the properties that have been defined for it in server.xml. These properties refer to the location and alias of the public key to load in order to validate the JWTs signature. They provide the flexibility to change the key reference without having to modify the JWTTAI code. If JWTTAI is not correctly initialized, it won't intercept incoming requests. The table below shows the properties that can be defined. 
+At server initialization, the JWTTAI reads the properties that have been defined for it in server.xml. These properties refer to the location and alias of the public key to load in order to validate the JWTs signature. They provide the flexibility to change the key reference without having to modify the JWTTAI code. If the JWTTAI is not correctly initialized, it won't intercept incoming requests. The table below shows the properties that can be defined. 
 
 |Property  |Default Value |Description                                                                                                                                 |
-|:--------:|:------------:|:------------------------------------------------------------------------------------------------------------------------------------------:|
+|:--------:|:------------:|:------------------------------------------------------------------------------------------------------------------------------------------ |
 |type      |JKS           | Keystore type, accepted values are JKS and JCERACFKS                                                                                       |
 |location  |key.jks       | Name of the keystore. If type=JKS, then the jks file must be in *resources/security*. If type=JCERACFKS, then specify the SAF Keyring name |
 |password  |Liberty       | Keystore password, not relevant for SAF Keyring                                                                                            |
 |alias     |default       | Key or certificate alias/label                                                                                                             |
 
-JWTTAI will only intercept **HTTPS** requests that contain a **JWT in the `Authorization Bearer` header**.
+JWTTAI will only intercept ***HTTPS*** requests that contain a ***JWT in the `Authorization Bearer` header***.
 
-**The JWTTAI uses the open-source library [io.jsonwebtoken](https://github.com/jwtk/jjwt) to validate and parse JWTs.**
+***The JWTTAI uses the open-source library [io.jsonwebtoken](https://github.com/jwtk/jjwt) to validate and parse JWTs.***
+
 So once JWTTAI is selected to handle the authentication, it will validate the JWT signature with the public key loaded at initialization and will parse the JWT to retrieve the claims. This sample only verify the issuer claim, but the other claims can also be verified.
 If the JWT passes all the checkings, the subject claim will be defined as the Principal identity and the request will be processed.
-Otherwise the request will be rejected. The subject claim needs to match an entry of the user registry.
+Otherwise the request will be rejected. 
+
+Be careful, the subject claim needs to match an entry of the user registry.
 
 This sample shows how a TAI can handle a simple JWT use case.
 
 ## Customize and compile
 
 To use this sample download the code or clone this repository and load the JWTTAI.java file into your preferred Java editor or IDE.
-Cutomize the JWTTAI.java class, and change at least one of the following values: \<RING_OWNER>, <PATH_TO_LIBERTY_SERVER>.
+
+Cutomize the JWTTAI.java class, and change at least one of the following values: `<RING_OWNER>`, `<PATH_TO_LIBERTY_SERVER>`.
 
 To compile the JWTTAI.java class and generate the JAR file, three Java libraries are required: 
 
 * Liberty JVM Server libraries, available with CICS Explorer
-* ibmjceprovider.jar, available in the z/OS $JAVA_HOME/lib/ext
+* ibmjceprovider.jar, available in the z/OS  $JAVA_HOME/lib/ext
 * io.jsonwebtoken (i.e. jjwt-x.y.z.jar), check [github](https://github.com/jwtk/jjwt)
 
 Finally, upload the generated JAR file (as binary) to zFS. In the example configuration we put this in the server configuration directory (same directory as server.xml). You will also need to upload the jjwt-x.y.z.jar and its jackson-**.jar dependencies to zFS, so that they can be added to your Liberty server library.
 
-### Liberty configuration
+## Liberty configuration
 
 Let's configure the Liberty instance, add the following elements to server.xml:
 
@@ -80,6 +84,8 @@ This modification adds the necessary JAR files to a library that can then be ref
 You may need to change the className attribute to match the name of your TAI class.
 This also sets the failOverToAppAuthType attribute to false, so app security is disabled.
 
-### Testing the TAI
+More information on the `trustAssocation` and `interceptors` elements can be found on the [IBM Knowledge Center](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.liberty.autogen.base.doc/ae/rwlp_config_trustAssociation.html)
+
+## Testing the TAI
 
 To test the TAI you will need to call into an existing application hosted in your Liberty JVM server. When you call the application, do so by sending a HTTPS request containing a JWT in the Authorization header. Make sure to use a JWT that contains the expected claims and to use the right set of public/private keys. If everything goes well you should see that the transaction is run with the user ID provided in the subject claim.
