@@ -1,7 +1,8 @@
 # cics-java-liberty-tai-jwt
-Sample WebSphere Liberty Trust Association Interceptor (TAI) for use with Liberty to validate [JSON web tokens (JWTs)](https://tools.ietf.org/html/rfc7519)
+Sample WebSphere Liberty Trust Association Interceptor (TAI) for use with CICS Liberty to validate [JSON web tokens (JWTs)](https://tools.ietf.org/html/rfc7519)
+and set the authorized user ID based on the JWT subject claim.
 
-For detailed instructions see [Configuring TAI in Liberty](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_sec_tai.html) and [Developing a custom TAI for Liberty](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_dev_custom_tai.html).
+For detailed configuration instructions see [Configuring TAI in Liberty](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_sec_tai.html) and [Developing a custom TAI for Liberty](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_dev_custom_tai.html).
 
 ## Introduction
 
