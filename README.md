@@ -50,8 +50,8 @@ Cutomize the JWTTAI.java class, and change at least one of the following values:
 
 To compile the JWTTAI.java class and generate the JAR file, three Java libraries are required: 
 
-* Liberty JVM Server libraries, available with CICS Explorer SDK 
-* ibmjceprovider.jar, available in the Java SDK for z/OS $JAVA_HOME/lib/ext
+* WebSphere Liberty libraries, available with CICS Explorer SDK 
+* ibmjceprovider.jar, available in the Java SDK for z/OS at $JAVA_HOME/lib/ext
 * io.jsonwebtoken (i.e. jjwt-x.y.z.jar), available from [github](https://github.com/jwtk/jjwt)
 
 Finally, upload the generated JAR file (as binary) to zFS. In the example configuration we put this in the server configuration directory (same directory as server.xml). You will also need to upload the jjwt-x.y.z.jar and its jackson-**.jar dependencies to zFS, so that they can be added to your Liberty server library.
