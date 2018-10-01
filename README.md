@@ -3,7 +3,7 @@ Sample WebSphere Liberty Trust Association Interceptor (TAI) for use with CICS L
 and set the authorized user ID based on the JWT subject claim.
 
 For detailed configuration instructions see [Configuring TAI in Liberty](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_sec_tai.html) and [Developing a custom TAI for Liberty](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_dev_custom_tai.html).
-A TAI can be deployed as a JAR file and added to the Liberty library (as shown in this description) **__OR__** as a Liberty feature (more information in the [Knowledge Center](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_feat_tai.html)
+A TAI can be deployed as a JAR file and added to the Liberty library (as shown in this description) **__OR__** as a Liberty feature (more information in the [Knowledge Center](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_feat_tai.html)).
 
 ## Introduction
 
@@ -73,7 +73,8 @@ This modification adds the necessary JAR file to a library that can then be refe
 You may need to change the className attribute to match the name of your TAI class.
 This also sets the failOverToAppAuthType attribute to false, so the application security is disabled.
 
-More information on the `trustAssocation` and `interceptors` elements can be found on the [IBM Knowledge Center](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.liberty.autogen.base.doc/ae/rwlp_config_trustAssociation.html)
+More information on the `trustAssocation` and `interceptors` elements can be found on the [IBM Knowledge Center](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.liberty.autogen.base.doc/ae/rwlp_config_trustAssociation.html).
+More information on the `jwtConsumer` element can be found on the [IBM Knowledge Center](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.liberty.autogen.base.doc/ae/rwlp_config_jwtConsumer.html).
 
 ## Testing the TAI
 
