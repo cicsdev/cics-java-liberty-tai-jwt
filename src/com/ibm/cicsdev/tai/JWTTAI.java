@@ -69,8 +69,8 @@ public class JWTTAI implements TrustAssociationInterceptor {
 		// Decode  the JWT using the JwtConsumer to obtain the claims
 		JwtConsumer jwtConsumer;
 		try {
-			// Use the defaultJWTConsumer configuration (in server.xml)
-			jwtConsumer = JwtConsumer.create("defaultJWTConsumer");
+			// Use the myJWTConsumer configuration (cf. server.xml)
+			jwtConsumer = JwtConsumer.create("myJWTConsumer");
 
 			JwtToken jwtTokenConsumer = jwtConsumer.createJwt(jwtTokenString);
 			Claims jwtClaims = jwtTokenConsumer.getClaims();
